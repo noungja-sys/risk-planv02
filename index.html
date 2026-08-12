@@ -1,152 +1,661 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RISK_PLAN.v2</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #fcfcfc;
+      --card: #ffffff;
+      --line: #e2e8f0;
+      --line-soft: #f1f5f9;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --field: #cbd5e1;
+      --accent: #0ea5e9;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --danger-line: #fecaca;
+      --warn: #b45309;
+      --warn-bg: #fffbeb;
+      --warn-line: #fde68a;
+      --info: #2563eb;
+      --good: #059669;
+      --good-bg: #ecfdf5;
+      --good-line: #a7f3d0;
+      --tile: #f8fafc;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
     body {
-      font-family: 'JetBrains Mono', monospace;
-      background-color: #fcfcfc;
-      color: #1e293b;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 16px;
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      background-color: var(--bg);
+      color: var(--ink);
       -webkit-tap-highlight-color: transparent;
     }
-    .main-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
+
+    .card {
+      width: 100%;
+      max-width: 32rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
+
+    .subtitle {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin: 2px 0 0;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      border: 1px solid #bae6fd;
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 8px 4px;
+    }
+
+    label .optional {
+      text-transform: none;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
     input {
-      font-size: 16px !important;
-      font-family: 'JetBrains Mono', monospace;
-      background: #ffffff !important;
-      border: 1px solid #cbd5e1 !important;
+      width: 100%;
+      padding: 16px;
+      /* 16px keeps iOS from auto-zooming the page on focus */
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--card);
+      border: 1px solid var(--field);
+      border-radius: 12px;
       appearance: none;
-      border-radius: 12px !important;
+      -webkit-appearance: none;
     }
-    input:focus {
-      border-color: #0ea5e9 !important;
+
+    /* The spinners overlap the placeholder on focus and are useless on touch. */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] { -moz-appearance: textfield; }
+
+    select {
+      width: 100%;
+      padding: 16px 34px 16px 16px;
+      font-size: 16px;
+      font-family: inherit;
+      font-weight: 700;
+      color: var(--ink);
+      background-color: var(--card);
+      /* Inline chevron: keeps the control self-contained, no image request. */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%2364748b' stroke-width='2' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 11px;
+      border: 1px solid var(--field);
+      border-radius: 12px;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
       outline: none;
-      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
     }
-    .btn-active:active {
-      transform: scale(0.96);
-      background-color: #000000;
+
+    .hint {
+      font-size: 10px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 8px 0 0 4px;
+    }
+
+    .presets {
+      display: flex;
+      gap: 8px;
+      margin: 8px 0 0 0;
+    }
+
+    .preset {
+      flex: 1;
+      padding: 8px 0;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      background: var(--tile);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .preset[aria-pressed="true"] {
+      color: var(--card);
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .preset:active { transform: scale(0.96); }
+
+    .alerts:empty { display: none; }
+
+    .alert {
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.5;
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+
+    .alert-danger {
+      color: var(--danger);
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-line);
+    }
+
+    .alert-warn {
+      color: var(--warn);
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-line);
+    }
+
+    .results {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .results[hidden] { display: none; }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .tile {
+      padding: 16px;
+      background: var(--tile);
+      border-radius: 16px;
+      min-width: 0;
+    }
+
+    .tile-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .tile-value {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .v-danger { color: var(--danger); }
+    .v-info { color: var(--info); }
+
+    .margin-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      background: var(--good-bg);
+      border: 1px solid var(--good-line);
+      border-radius: 16px;
+    }
+
+    .margin-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #047857;
+    }
+
+    .margin-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--good);
+      overflow-wrap: anywhere;
+    }
+
+    .meta {
+      font-size: 10px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin: 16px 0 0;
+    }
+
+    .reset {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .reset:active { transform: scale(0.98); }
+
+    @media (min-width: 768px) {
+      body { align-items: center; padding: 32px; }
+      .card { padding: 40px; }
     }
   </style>
 </head>
-<body class="flex items-start md:items-center justify-center min-h-screen p-4 md:p-8">
+<body>
 
-  <div class="main-card w-full max-w-lg p-6 md:p-10 rounded-[24px] shadow-sm">
-    <header class="mb-8 flex justify-between items-end">
+  <main class="card">
+    <header>
       <div>
-        <h1 class="text-lg font-bold tracking-tighter text-slate-900">RISK_PLAN.v2</h1>
-        <p class="text-[10px] text-slate-400 uppercase tracking-widest">Mobile Optimized</p>
+        <h1>RISK_PLAN.v2</h1>
+        <p class="subtitle">Position Sizing</p>
       </div>
-      <div class="text-[10px] font-bold text-sky-500 border border-sky-200 px-2 py-1 rounded">
-        LIVE_DATA
-      </div>
+      <div class="badge">AUTO_CALC</div>
     </header>
 
-    <form id="riskForm" class="space-y-5">
-      <div>
-        <label class="text-[11px] font-bold uppercase text-slate-500 ml-1 mb-2 block">Port Capital</label>
-        <input type="number" id="capital" inputmode="decimal" placeholder="0.00" step="any" min="0" class="w-full px-4 py-4 text-slate-900" required>
+    <form id="riskForm" autocomplete="off">
+      <div class="field">
+        <label for="capital">Port Capital</label>
+        <input type="number" id="capital" autocomplete="off" inputmode="decimal" placeholder="0.00" step="any" min="0">
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="text-[11px] font-bold uppercase text-slate-500 ml-1 mb-2 block">Risk %</label>
-          <input type="number" id="riskOfRuin" inputmode="decimal" value="1" step="any" min="0" class="w-full px-4 py-4 text-slate-900" required>
+      <div class="field">
+        <div class="row">
+          <div>
+            <label for="riskPct">Risk %</label>
+            <input type="number" id="riskPct" autocomplete="off" inputmode="decimal" value="1" step="any" min="0">
+          </div>
+          <div>
+            <label for="stopLoss">SL %</label>
+            <input type="number" id="stopLoss" autocomplete="off" inputmode="decimal" placeholder="5" step="any" min="0">
+          </div>
         </div>
-        <div>
-          <label class="text-[11px] font-bold uppercase text-slate-500 ml-1 mb-2 block">SL %</label>
-          <input type="number" id="stopLoss" inputmode="decimal" placeholder="5" step="any" min="0" class="w-full px-4 py-4 text-slate-900" required>
+        <div class="presets" role="group" aria-label="Risk percent presets">
+          <button type="button" class="preset" data-risk="0.5">0.5%</button>
+          <button type="button" class="preset" data-risk="1">1%</button>
+          <button type="button" class="preset" data-risk="2">2%</button>
         </div>
       </div>
 
-      <div>
-        <label class="text-[11px] font-bold uppercase text-slate-500 ml-1 mb-2 block">Leverage (x)</label>
-        <input type="number" id="leverage" inputmode="numeric" value="1" min="1" step="any" class="w-full px-4 py-4 text-slate-900" required>
+      <div class="field">
+        <div class="row">
+          <div>
+            <label for="leverage">Leverage (x)</label>
+            <input type="number" id="leverage" autocomplete="off" inputmode="decimal" value="1" step="any" min="1">
+          </div>
+          <div>
+            <label for="entryPrice">Entry <span class="optional">(ไม่บังคับ)</span></label>
+            <input type="number" id="entryPrice" autocomplete="off" inputmode="decimal" placeholder="ราคาเข้า" step="any" min="0">
+          </div>
+        </div>
       </div>
 
-      <button type="submit" id="submitBtn" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl transition-all btn-active mt-2">
-        CALCULATE_POSITION
-      </button>
+      <div class="field">
+        <div class="row">
+          <div>
+            <label for="exchange">Exchange</label>
+            <select id="exchange" autocomplete="off">
+              <option value="none" data-fee="0">ไม่คิดค่าธรรมเนียม</option>
+              <option value="binance-futures" data-fee="0.05">Binance Futures</option>
+              <option value="binance-spot" data-fee="0.1">Binance Spot</option>
+              <option value="okx-futures" data-fee="0.05">OKX Futures</option>
+              <option value="bybit-futures" data-fee="0.055">Bybit Futures</option>
+              <option value="pionex" data-fee="0.05">Pionex</option>
+              <option value="custom">กำหนดเอง</option>
+            </select>
+          </div>
+          <div>
+            <label for="feePct">Fee % <span class="optional">(ต่อขา)</span></label>
+            <input type="number" id="feePct" autocomplete="off" inputmode="decimal" value="0" step="any" min="0">
+          </div>
+        </div>
+        <p class="hint">ค่าเริ่มต้นคือเรต taker ระดับ VIP0 ใช้เป็นค่าประมาณ — เรตจริงขึ้นกับระดับ VIP และส่วนลด (เช่น BNB) ควรเช็คกับ exchange แล้วแก้ตัวเลขเองได้</p>
+      </div>
     </form>
 
-    <p id="errorMsg" class="mt-4 text-[11px] font-bold text-red-500 hidden"></p>
+    <div id="alerts" class="alerts" role="alert" aria-live="assertive"></div>
 
-    <div id="result" class="mt-8 pt-6 border-t border-slate-100 hidden">
-      <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="p-4 bg-slate-50 rounded-2xl">
-          <span class="text-[10px] font-bold text-slate-400 block mb-1">RISK (1R)</span>
-          <span id="res1R" class="text-sm font-bold text-red-500"></span>
+    <section id="results" class="results" aria-live="polite" hidden>
+      <div class="tiles">
+        <div class="tile">
+          <span class="tile-label">RISK (1R)</span>
+          <span id="resRisk" class="tile-value v-danger"></span>
         </div>
-        <div class="p-4 bg-slate-50 rounded-2xl">
-          <span class="text-[10px] font-bold text-slate-400 block mb-1">POS_SIZE</span>
-          <span id="resPos" class="text-sm font-bold text-blue-600"></span>
+        <div class="tile">
+          <span class="tile-label">POS_SIZE</span>
+          <span id="resPos" class="tile-value v-info"></span>
         </div>
       </div>
 
-      <div class="p-5 bg-emerald-50 border border-emerald-100 rounded-2xl flex justify-between items-center">
-        <span class="text-[11px] font-bold text-emerald-700">REQUIRED_MARGIN</span>
-        <span id="resMargin" class="text-xl font-bold text-emerald-600"></span>
+      <div class="margin-box">
+        <span class="margin-label">REQUIRED_MARGIN</span>
+        <span id="resMargin" class="margin-value"></span>
       </div>
-    </div>
-  </div>
+
+      <p id="meta" class="meta"></p>
+    </section>
+
+    <button type="button" id="resetBtn" class="reset">ล้างค่าที่จำไว้</button>
+  </main>
 
   <script>
-    const money = new Intl.NumberFormat('en-US', {
-      style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2
-    });
+    (function () {
+      'use strict';
 
-    function calculateRisk({ capital, riskOfRuin, stopLoss, leverage }) {
-      const oneR = capital * (riskOfRuin / 100);        // เงินที่ยอมเสียต่อไม้
-      const positionSize = oneR / (stopLoss / 100);      // ขนาดสถานะรวม
-      const margin = positionSize / leverage;            // มาร์จิ้นที่ต้องวาง
-      return {
-        oneR: money.format(oneR),
-        positionSize: money.format(positionSize),
-        margin: money.format(margin)
-      };
-    }
+      var STORAGE_KEY = 'risk_plan_v2';
+      var money = new Intl.NumberFormat('en-US', {
+        style: 'currency', currency: 'USD',
+        minimumFractionDigits: 2, maximumFractionDigits: 2
+      });
 
-    const errorMsg = document.getElementById('errorMsg');
-
-    document.getElementById('riskForm').onsubmit = function (e) {
-      e.preventDefault();
-      const resultDiv = document.getElementById('result');
-
-      const data = {
-        capital: parseFloat(document.getElementById('capital').value),
-        riskOfRuin: parseFloat(document.getElementById('riskOfRuin').value),
-        stopLoss: parseFloat(document.getElementById('stopLoss').value),
-        leverage: parseFloat(document.getElementById('leverage').value)
+      var el = {
+        capital: document.getElementById('capital'),
+        riskPct: document.getElementById('riskPct'),
+        stopLoss: document.getElementById('stopLoss'),
+        leverage: document.getElementById('leverage'),
+        entryPrice: document.getElementById('entryPrice'),
+        exchange: document.getElementById('exchange'),
+        feePct: document.getElementById('feePct'),
+        alerts: document.getElementById('alerts'),
+        results: document.getElementById('results'),
+        resRisk: document.getElementById('resRisk'),
+        resPos: document.getElementById('resPos'),
+        resMargin: document.getElementById('resMargin'),
+        meta: document.getElementById('meta'),
+        resetBtn: document.getElementById('resetBtn')
       };
 
-      const invalid =
-        !Number.isFinite(data.capital) || data.capital <= 0 ||
-        !Number.isFinite(data.riskOfRuin) || data.riskOfRuin <= 0 ||
-        !Number.isFinite(data.stopLoss) || data.stopLoss <= 0 ||
-        !Number.isFinite(data.leverage) || data.leverage < 1;
-
-      if (invalid) {
-        resultDiv.classList.add('hidden');
-        errorMsg.innerText = 'ERR: ใส่ตัวเลขให้ครบ (SL% และ Risk% ต้องมากกว่า 0, Leverage ≥ 1)';
-        errorMsg.classList.remove('hidden');
-        return;
+      // Units vary wildly by instrument (40000 BTC-dollars vs 0.0004 BTC),
+      // so scale the precision to the magnitude instead of fixing it.
+      function formatUnits(n) {
+        var digits = n >= 1000 ? 2 : n >= 1 ? 4 : 8;
+        return n.toLocaleString('en-US', {
+          minimumFractionDigits: 0, maximumFractionDigits: digits
+        });
       }
 
-      errorMsg.classList.add('hidden');
-      const res = calculateRisk(data);
+      function num(input) {
+        var v = parseFloat(input.value);
+        return Number.isFinite(v) ? v : NaN;
+      }
 
-      document.getElementById('res1R').innerText = res.oneR;
-      document.getElementById('resPos').innerText = res.positionSize;
-      document.getElementById('resMargin').innerText = res.margin;
-      resultDiv.classList.remove('hidden');
-    };
+      function calculate(input) {
+        var oneR = input.capital * (input.riskPct / 100);
+        // Getting stopped out costs the stop distance PLUS both fee legs, so
+        // the fees have to come out of the same 1R budget — otherwise every
+        // losing trade quietly overshoots the intended risk.
+        var costPct = input.stopLoss + input.feePct * 2;
+        var positionSize = oneR / (costPct / 100);
+        var feeCost = positionSize * (input.feePct * 2) / 100;
+        var margin = positionSize / input.leverage;
+        // Rough liquidation distance: ignores maintenance margin, funding and
+        // fees, so the real liquidation always sits a bit closer than this.
+        var liqDistance = 100 / input.leverage;
+        return {
+          oneR: oneR,
+          positionSize: positionSize,
+          feeCost: feeCost,
+          margin: margin,
+          liqDistance: liqDistance,
+          units: input.entryPrice > 0 ? positionSize / input.entryPrice : null
+        };
+      }
+
+      function alertHTML(kind, text) {
+        var p = document.createElement('p');
+        p.className = 'alert alert-' + kind;
+        p.textContent = text;
+        return p;
+      }
+
+      function render() {
+        var input = {
+          capital: num(el.capital),
+          riskPct: num(el.riskPct),
+          stopLoss: num(el.stopLoss),
+          leverage: num(el.leverage),
+          entryPrice: num(el.entryPrice),
+          feePct: Math.max(0, num(el.feePct) || 0)
+        };
+
+        el.alerts.textContent = '';
+
+        var ready =
+          input.capital > 0 &&
+          input.riskPct > 0 &&
+          input.stopLoss > 0 &&
+          input.leverage >= 1;
+
+        if (!ready) {
+          // Stale numbers are worse than no numbers — hide them.
+          el.results.hidden = true;
+          save(input);
+          return;
+        }
+
+        var out = calculate(input);
+
+        el.resRisk.textContent = money.format(out.oneR);
+        el.resPos.textContent = money.format(out.positionSize);
+        el.resMargin.textContent = money.format(out.margin);
+
+        var meta = 'จุดล้างพอร์ตโดยประมาณ: ราคาสวน ' +
+          out.liqDistance.toLocaleString('en-US', { maximumFractionDigits: 2 }) +
+          '% (ยังไม่รวม maintenance margin และค่าธรรมเนียม จริงจะใกล้กว่านี้)';
+
+        if (input.feePct > 0) {
+          meta = 'ค่าธรรมเนียมไป-กลับ: ' + money.format(out.feeCost) + ' (' +
+            (out.feeCost / out.oneR * 100).toFixed(1) + '% ของ 1R) — หักจากงบเสี่ยงแล้ว\n' + meta;
+        }
+
+        if (out.units !== null) {
+          meta = 'จำนวนที่ต้องเปิด: ' + formatUnits(out.units) + ' หน่วย @ ' +
+            formatUnits(input.entryPrice) + '\n' + meta;
+        }
+        el.meta.textContent = meta;
+        el.meta.style.whiteSpace = 'pre-line';
+
+        if (input.stopLoss >= out.liqDistance) {
+          el.alerts.appendChild(alertHTML('danger',
+            'อันตราย: SL ' + input.stopLoss + '% กว้างกว่าจุดล้างพอร์ต (~' +
+            out.liqDistance.toFixed(2) + '%) ที่ ' + input.leverage +
+            'x — ราคายังไม่ถึง SL คุณจะโดนล้างพอร์ตก่อน เสียเต็มมาร์จิ้น ไม่ใช่แค่ ' +
+            input.riskPct + '%'));
+        } else if (input.stopLoss >= out.liqDistance * 0.8) {
+          el.alerts.appendChild(alertHTML('warn',
+            'ระวัง: SL ' + input.stopLoss + '% เฉียดจุดล้างพอร์ต (~' +
+            out.liqDistance.toFixed(2) + '%) มาก — ค่าธรรมเนียมหรือไส้เทียนนิดเดียวก็ถึงได้'));
+        }
+
+        if (out.margin > input.capital) {
+          el.alerts.appendChild(alertHTML('danger',
+            'มาร์จิ้นที่ต้องใช้ ' + money.format(out.margin) + ' เกินทุนที่มี ' +
+            money.format(input.capital) + ' — เปิดไม้นี้ไม่ได้ ต้องลด Risk% เพิ่ม SL% หรือเพิ่ม Leverage'));
+        }
+
+        el.results.hidden = false;
+        save(input);
+      }
+
+      function save(input) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            capital: el.capital.value,
+            riskPct: el.riskPct.value,
+            leverage: el.leverage.value,
+            exchange: el.exchange.value,
+            feePct: el.feePct.value
+          }));
+        } catch (e) {
+          // Private browsing can block storage; the calculator still works.
+        }
+      }
+
+      function load() {
+        // SL and entry belong to one specific trade. The browser happily
+        // restores them on reload or a back-navigation, which would hand you
+        // the last trade's stop while the field looks freshly filled — so
+        // these two are always cleared, never persisted.
+        el.stopLoss.value = '';
+        el.entryPrice.value = '';
+
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          var saved = JSON.parse(raw);
+          if (saved.capital) el.capital.value = saved.capital;
+          if (saved.riskPct) el.riskPct.value = saved.riskPct;
+          if (saved.leverage) el.leverage.value = saved.leverage;
+          if (saved.exchange) el.exchange.value = saved.exchange;
+          if (saved.feePct) el.feePct.value = saved.feePct;
+        } catch (e) {
+          // Corrupt or unreadable storage — fall back to the defaults.
+        }
+      }
+
+      function syncPresets() {
+        var current = el.riskPct.value;
+        document.querySelectorAll('.preset').forEach(function (btn) {
+          btn.setAttribute('aria-pressed', String(btn.dataset.risk === current));
+        });
+      }
+
+      ['capital', 'riskPct', 'stopLoss', 'leverage', 'entryPrice'].forEach(function (key) {
+        el[key].addEventListener('input', function () {
+          syncPresets();
+          render();
+        });
+      });
+
+      el.exchange.addEventListener('change', function () {
+        var fee = el.exchange.selectedOptions[0].dataset.fee;
+        // "custom" carries no data-fee — leave whatever the user typed alone.
+        if (fee !== undefined) el.feePct.value = fee;
+        render();
+      });
+
+      el.feePct.addEventListener('input', function () {
+        // Typing a rate by hand means it is no longer the exchange's default.
+        var typed = el.feePct.value;
+        var match = Array.prototype.find.call(el.exchange.options, function (o) {
+          return o.dataset.fee === typed;
+        });
+        el.exchange.value = match ? match.value : 'custom';
+        render();
+      });
+
+      document.querySelectorAll('.preset').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          el.riskPct.value = btn.dataset.risk;
+          syncPresets();
+          render();
+        });
+      });
+
+      el.resetBtn.addEventListener('click', function () {
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        el.capital.value = '';
+        el.riskPct.value = '1';
+        el.stopLoss.value = '';
+        el.leverage.value = '1';
+        el.entryPrice.value = '';
+        el.exchange.value = 'none';
+        el.feePct.value = '0';
+        syncPresets();
+        render();
+        el.capital.focus();
+      });
+
+      document.getElementById('riskForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+      });
+
+      function boot() {
+        load();
+        syncPresets();
+        render();
+      }
+
+      // Chrome restores form values AFTER scripts run, so booting once on
+      // parse is not enough — pageshow lands after the restore and also
+      // covers coming back via the browser's back button.
+      window.addEventListener('pageshow', boot);
+      boot();
+    })();
   </script>
 </body>
 </html>
